@@ -96,7 +96,8 @@ public class MainActivity extends AppCompatActivity {
     ProgressDialog mProgressDialog;
     // View Variables
     private Button button;
-    private Button button2;
+    private Button reminder;
+    private Button patientlog;
     private TextView textView;
     private TextView symptomtext;
     private TextView currentStatetext;
@@ -261,6 +262,8 @@ public class MainActivity extends AppCompatActivity {
         textView = findViewById(R.id.textview);
         currentStatetext = findViewById(R.id.currentState);
         button = findViewById(R.id.button);
+        reminder = findViewById(R.id.Reminder);
+        patientlog = findViewById(R.id.PatientLog);
         //button2 = findViewById(R.id.button2);
         symptomtext = findViewById(R.id.symptomtext);
         careGiverSwitch = findViewById(R.id.careGiverButton);
@@ -318,6 +321,21 @@ public class MainActivity extends AppCompatActivity {
                 TobeAdded.put("/users/" + key, UserValues);
 
                 databaseRef.updateChildren(TobeAdded);
+            }
+        });
+
+        reminder.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View v){
+                startActivity(new Intent(MainActivity.this, ReminderActivity.class));
+
+            }
+        });
+
+        patientlog.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View v){
+                startActivity(new Intent(MainActivity.this, PatientLogActivity.class));
             }
         });
     }
