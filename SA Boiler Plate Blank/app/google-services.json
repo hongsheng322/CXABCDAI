@@ -1,0 +1,46 @@
+{
+  "project_info": {
+    "project_number": "697939210003",
+    "firebase_url": "https://xbservertest.firebaseio.com",
+    "project_id": "xbservertest",
+    "storage_bucket": "xbservertest.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:697939210003:android:a57d823228c9c808",
+        "android_client_info": {
+          "package_name": "sg.gowild.sademo"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "697939210003-eq8vu1uhgv8b56kdj59bggqm1e370bi0.apps.googleusercontent.com",
+          "client_type": 3
+        },
+        {
+          "client_id": "697939210003-eq8vu1uhgv8b56kdj59bggqm1e370bi0.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDMVXbSAtlBGPgZ35xMfHbg_HGclS-KE4I"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
