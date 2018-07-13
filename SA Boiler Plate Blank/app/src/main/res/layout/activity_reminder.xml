@@ -11,30 +11,36 @@
         android:id="@+id/textView2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignBottom="@+id/back"
-        android:layout_marginEnd="63dp"
-        android:layout_toStartOf="@+id/back"
+        android:layout_alignParentTop="true"
+        android:layout_alignStart="@+id/set"
+        android:layout_marginStart="32dp"
         android:text="Reminders"
         android:textSize="30dp"
         android:textStyle="bold" />
 
     <Button
+        android:id="@+id/set"
+        android:layout_width="100dp"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_alignStart="@+id/reminderlist"
+        android:layout_marginStart="31dp"
+        android:text="Set" />
+
+    <Button
         android:id="@+id/back"
         android:layout_width="100dp"
         android:layout_height="wrap_content"
-        android:layout_alignParentEnd="true"
-        android:layout_alignParentTop="true"
-        android:layout_marginEnd="0dp"
-        android:layout_marginTop="0dp"
+        android:layout_alignEnd="@+id/reminderlist"
+        android:layout_alignParentBottom="true"
+        android:layout_marginEnd="14dp"
         android:text="Back" />
 
     <ListView
         android:id="@+id/reminderlist"
-        android:layout_width="100dp"
-        android:layout_height="wrap_content"
-        android:layout_alignParentStart="true"
-        android:layout_below="@+id/textView2"
-        android:layout_toStartOf="@+id/back"></ListView>
+        android:layout_width="300dp"
+        android:layout_height="400dp"
+        android:layout_below="@+id/textView2"></ListView>
 
 
 </RelativeLayout>

@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:gravity="center"
+    android:orientation="vertical"
+    tools:context=".CreateReminderActivity">
+
+    <LinearLayout
+        android:layout_width="350dp"
+        android:layout_height="100dp"
+        android:layout_below="@+id/textView2"
+        android:layout_centerHorizontal="true"
+        android:layout_above="@+id/create"
+        android:id="@+id/linearLayout">
+
+        <CalendarView
+            android:id="@+id/calendar"
+            android:layout_width="300dp"
+            android:layout_height="300dp"
+            android:layout_marginStart="30dp">
+
+        </CalendarView>
+
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/textView2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="14dp"
+        android:text="Create Reminder"
+        android:textSize="30dp"
+        android:textStyle="bold" />
+
+    <Button
+        android:id="@+id/hour"
+        android:layout_width="100dp"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="70dp"
+        android:layout_alignStart="@+id/textView2"
+        android:text="00" />
+
+    <Button
+        android:id="@+id/mins"
+        android:layout_width="100dp"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="70dp"
+        android:layout_alignEnd="@+id/textView2"
+        android:text="00" />
+
+
+    <Button
+        android:id="@+id/create"
+        android:layout_width="100dp"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_alignStart="@+id/textView2"
+        android:layout_marginBottom="11dp"
+        android:text="Create" />
+
+    <Button
+        android:id="@+id/cancel"
+        android:layout_width="100dp"
+        android:layout_height="wrap_content"
+        android:layout_alignBaseline="@+id/create"
+        android:layout_alignBottom="@+id/create"
+        android:layout_alignEnd="@+id/textView2"
+        android:text="Cancel" />
+
+    <TextView
+        android:id="@+id/dislay"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="display"/>
+
+</RelativeLayout>

@@ -141,12 +141,14 @@ public class MainActivity extends AppCompatActivity {
         DIALOGSTATE_NO
     }
 
+    static boolean firstrun = true;
     private Handler handler = new Handler();
     private Runnable runnable = new Runnable() {
         @Override
         public void run() {
             checkTime();
             handler.postDelayed(this, 6000);
+
         }
     };
 
@@ -157,6 +159,11 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
+        if(firstrun)
+            handler.postDelayed(runnable, 6000);
+        firstrun = false;
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
@@ -175,8 +182,8 @@ public class MainActivity extends AppCompatActivity {
 
         //notification when startup
 /*        AlarmManager alarmManager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
-        Calendar cal = Calendar.getInstance();
         cal.add(Calendar.SECOND, 5);
+        Calendar cal = Calendar.getInstance();
 
         Intent notificationIntent = new Intent(this, Notification_Receiver.class);
         PendingIntent broadcast = PendingIntent.getBroadcast(this, 100, notificationIntent, PendingIntent.FLAG_UPDATE_CURRENT);
@@ -227,10 +234,32 @@ public class MainActivity extends AppCompatActivity {
 
             }
         });
-        handler.postDelayed(runnable, 6000);
     }
 
-   /* Thread t=new Thread(){
+    private void  SortReminder()
+    {
+        int n = list_reminder.size();
+        for (int i = 0; i < n-1; i++) {
+            for (int j = 0; j < n - i - 1; j++){
+                if (list_reminder.get(j).after(list_reminder.get(j + 1))) {
+                    // swap temp and arr[i]
+                    Date temp = list_reminder.get(j);
+                    String temp_info = list_reminder_info.get(j);
+                    list_reminder.set(j, list_reminder.get(j + 1));
+                    list_reminder.set(j + 1, temp);
+
+                    list_reminder_info.set(j, list_reminder_info.get(j + 1));
+                    list_reminder_info.set(j + 1, temp_info);
+                }
+            }
+        }
+        for (Date tempDate : list_reminder)
+        {
+            android.util.Log.d("date",tempDate.toString());
+        }
+    }
+
+    Thread t=new Thread(){
         @Override
         public void run(){
 
@@ -253,7 +282,7 @@ public class MainActivity extends AppCompatActivity {
 
             }
         //}
-    };*/
+    };
 
 
 
@@ -889,41 +918,20 @@ public class MainActivity extends AppCompatActivity {
         return "No weather info feels bad man";
     }
 
-    private void  SortReminder()
-    {
-        int n = list_reminder.size();
-        for (int i = 0; i < n-1; i++) {
-            for (int j = 0; j < n - i - 1; j++){
-                if (list_reminder.get(j).after(list_reminder.get(j + 1))) {
-                    // swap temp and arr[i]
-                    Date temp = list_reminder.get(j);
-                    String temp_info = list_reminder_info.get(j);
-                    list_reminder.set(j, list_reminder.get(j + 1));
-                    list_reminder.set(j + 1, temp);
-
-                    list_reminder_info.set(j, list_reminder_info.get(j + 1));
-                    list_reminder_info.set(j + 1, temp_info);
-                }
-            }
-        }
-        for (Date tempDate : list_reminder)
-        {
-            Log.d("date",tempDate.toString());
-        }
-    }
-
 
     private void checkTime() {
+
         Date todayDate = new Date();
         SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd");
+
         //if(sdf.format(todayDate).equals(sdf.format(list_reminder.get(0))))
-        //    startTts(list_reminder_info.get(0));
+            //startTts(list_reminder_info.get(0));
+
         for (int i = 0; i < list_reminder.size(); i++)
         {
                // hh:mm");
             if(sdf.format(todayDate).equals(sdf.format(list_reminder.get(i))))
                 startTts(list_reminder_info.get(i));
         }
-        //t.start();
     }
 }
