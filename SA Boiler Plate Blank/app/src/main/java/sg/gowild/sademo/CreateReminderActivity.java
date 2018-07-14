@@ -8,6 +8,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CalendarView;
+import android.widget.EditText;
 import android.widget.PopupMenu;
 import android.widget.TextView;
 
@@ -43,6 +44,7 @@ public class CreateReminderActivity extends AppCompatActivity {
     int usercount;
     int userid;
     int logid;
+    EditText info;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -96,8 +98,9 @@ public class CreateReminderActivity extends AppCompatActivity {
         hours = findViewById(R.id.hour);
         mins = findViewById(R.id.mins);
         display = findViewById(R.id.dislay);
-        display.setText("Sun Jul 15 15:07:44 GMT+08:00 2018");
+        display.setText("Sun, Jul 15, 2018, 12 00 am");
         cv = (CalendarView) findViewById(R.id.calendar);
+        info = findViewById(R.id.info);
 
         cancel.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -110,7 +113,7 @@ public class CreateReminderActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
 
-                Log log = new Log(display.getText().toString(), "New Reminder",false);
+                Log log = new Log(display.getText().toString(), info.getText().toString(),false);
                 currentuser.AddReminderLog(log.toString());
 
                 HashMap<String, Object> res = new HashMap<>();

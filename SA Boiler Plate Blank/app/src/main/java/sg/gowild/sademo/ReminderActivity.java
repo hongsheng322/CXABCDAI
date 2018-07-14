@@ -69,7 +69,7 @@ public class ReminderActivity extends AppCompatActivity {
                         for (sg.gowild.sademo.Log tempLog : newUser.ReminderLogList)
                         {
                             Info info = new Info();
-                            info.name = tempLog.DateTime;
+                            info.date = tempLog.DateTime_s;
                             info.desc = tempLog.Information;
                             listData.add(info);
 
@@ -165,6 +165,8 @@ public class ReminderActivity extends AppCompatActivity {
             list.add(list_reminder_info.get(i) + " \n " + new SimpleDateFormat("E, MMM d, yyyy, hh:mm aa").format(list_reminder.get(i)));
         }
 
+        SortReminder();
+
         adapter = new ArrayAdapter(this, R.layout.list_item, R.id.item, list);
         listAdapter = new ListAdapter(listData);
         reminderlist.setAdapter(listAdapter);
@@ -184,6 +186,10 @@ public class ReminderActivity extends AppCompatActivity {
 
                     list_reminder_info.set(j, list_reminder_info.get(j + 1));
                     list_reminder_info.set(j + 1, temp_info);
+
+                    Info t = listData.get(j);
+                    listData.set(j, listData.get(j+1));
+                    listData.set(j+1, t);
                 }
             }
         }
@@ -198,7 +204,7 @@ public class ReminderActivity extends AppCompatActivity {
         super.onResume();
     }
     class Info{
-        public Date name= new Date();
+        public String date="";
         public String desc="";
     }
     class ViewHolder{
@@ -243,7 +249,7 @@ public class ReminderActivity extends AppCompatActivity {
             else{
                 viewHolder = (ViewHolder) convertView.getTag();
             }
-            viewHolder.date.setText(listData.get(position).name.toString());
+            viewHolder.date.setText(listData.get(position).date.toString());
             viewHolder.desc.setText(listData.get(position).desc);
             return super.bindView(position, convertView);
         }
