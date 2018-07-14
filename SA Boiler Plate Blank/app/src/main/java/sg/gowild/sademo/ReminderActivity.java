@@ -3,6 +3,7 @@ package sg.gowild.sademo;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.util.*;
 import android.view.View;
@@ -10,6 +11,7 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ListView;
+import android.widget.TextView;
 
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -29,7 +31,11 @@ public class ReminderActivity extends AppCompatActivity {
 
     private Button back;
     private Button set;
-    private ListView reminderlist;
+    //private ListView reminderlist;
+    private  SwipeListView reminderlist;
+    private ListAdapter listAdapter;
+    private ArrayList<Info> listData = new ArrayList<Info>();
+
     List list = new ArrayList();
     ArrayAdapter adapter;
 
@@ -62,6 +68,11 @@ public class ReminderActivity extends AppCompatActivity {
                     {
                         for (sg.gowild.sademo.Log tempLog : newUser.ReminderLogList)
                         {
+                            Info info = new Info();
+                            info.name = tempLog.DateTime;
+                            info.desc = tempLog.Information;
+                            listData.add(info);
+
                             list_reminder.add(tempLog.DateTime);
                             list_reminder_info.add(tempLog.Information);
                         }
@@ -90,7 +101,7 @@ public class ReminderActivity extends AppCompatActivity {
 
         back = findViewById(R.id.back);
         set = findViewById(R.id.set);
-        reminderlist = (ListView)findViewById(R.id.reminderlist);
+        reminderlist = (SwipeListView)findViewById(R.id.reminderlist);
 
         set.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -106,8 +117,45 @@ public class ReminderActivity extends AppCompatActivity {
             }
         });
 
+        reminderlist.setListener(new OnSwipeListItemClickListener() {
+            public void OnClick(View view, int index) {
+                AlertDialog.Builder ab = new AlertDialog.Builder(ReminderActivity.this);
+                ab.setTitle(list_reminder_info.get(index));
+                ab.setMessage(list_reminder.get(index).toString());
+                ab.create().show();
+            }
+
+            @Override
+            public boolean OnLongClick(View view, int index) {
+                return false;
+            }
+
+            @Override
+            public void OnControlClick(int rid, View view, int index) {
+                AlertDialog.Builder ab;
+                switch (rid){
+                    /*case R.id.modify:
+                        ab = new AlertDialog.Builder(ReminderActivity.this);
+                        ab.setTitle("Modify");
+                        ab.setMessage("You will modify item "+index);
+                        ab.create().show();
+                        break;*/
+                    case R.id.delete:
+                        /*ab = new AlertDialog.Builder(ReminderActivity.this);
+                        ab.setTitle("Deleted");
+                        ab.setMessage("You will delete item "+index);
+                        ab.create().show();*/
+                        list_reminder.remove(index);
+                        list_reminder_info.remove(index);
+                        listAdapter.removeitem(index);
+                        break;
+                }
+            }
+        }, new int[]{R.id.delete});
+
         adapter = new ArrayAdapter(ReminderActivity.this, android.R.layout.simple_list_item_1, list);
-        reminderlist.setAdapter(adapter);
+        listAdapter = new ListAdapter(listData);
+        reminderlist.setAdapter(listAdapter);
     }
 
     void Updatetable()
@@ -118,7 +166,8 @@ public class ReminderActivity extends AppCompatActivity {
         }
 
         adapter = new ArrayAdapter(this, R.layout.list_item, R.id.item, list);
-        reminderlist.setAdapter(adapter);
+        listAdapter = new ListAdapter(listData);
+        reminderlist.setAdapter(listAdapter);
     }
 
     private void  SortReminder()
@@ -141,6 +190,62 @@ public class ReminderActivity extends AppCompatActivity {
         for (Date tempDate : list_reminder)
         {
             android.util.Log.d("date",tempDate.toString());
+        }
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+    }
+    class Info{
+        public Date name= new Date();
+        public String desc="";
+    }
+    class ViewHolder{
+        public TextView date;
+        public TextView desc;
+        public Button modify;
+        public Button delete;
+    }
+    class ListAdapter extends SwipeListAdapter {
+        private ArrayList<Info> listData;
+        public ListAdapter(ArrayList<Info> listData){
+            this.listData= (ArrayList<Info>) listData.clone();
+        }
+        @Override
+        public int getCount() {
+            return listData.size();
+        }
+
+        @Override
+        public Object getItem(int position) {
+            return listData.get(position);
+        }
+
+        @Override
+        public long getItemId(int position) {
+            return position;
+        }
+
+        public void removeitem(int id) { this.listData.remove(getItem(id)); }
+
+        @Override
+        public View getView(int position, View convertView, ViewGroup parent) {
+            ViewHolder viewHolder = new ViewHolder();
+            if(convertView == null){
+                convertView = View.inflate(getBaseContext(),R.layout.styles_list,null);
+                viewHolder.date = (TextView) convertView.findViewById(R.id.date);
+                viewHolder.desc = (TextView) convertView.findViewById(R.id.desc);
+                //viewHolder.modify = (Button) convertView.findViewById(R.id.modify);
+                viewHolder.delete = (Button) convertView.findViewById(R.id.delete);
+                convertView.setTag(viewHolder);
+            }
+            else{
+                viewHolder = (ViewHolder) convertView.getTag();
+            }
+            viewHolder.date.setText(listData.get(position).name.toString());
+            viewHolder.desc.setText(listData.get(position).desc);
+            return super.bindView(position, convertView);
         }
     }
 }

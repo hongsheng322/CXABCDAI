@@ -11,11 +11,21 @@ import android.widget.CalendarView;
 import android.widget.PopupMenu;
 import android.widget.TextView;
 
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
+import com.google.firebase.database.ValueEventListener;
+
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
 
 public class CreateReminderActivity extends AppCompatActivity {
 
@@ -26,13 +36,57 @@ public class CreateReminderActivity extends AppCompatActivity {
     TextView display;
     CalendarView cv;
 
+    private FirebaseDatabase database = FirebaseDatabase.getInstance();
+    DatabaseReference databaseRef = database.getReference();
+
+    Usera currentuser;
+    int usercount;
+    int userid;
+    int logid;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_createreminder);
 
-        Setupviews();
+        logid = 0;
+        usercount = 0;
+        userid = 0;
 
+        Query UsersQuery = databaseRef.child("users").orderByKey();
+        UsersQuery.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                List<Usera> UserList = new ArrayList<Usera>();
+                for (DataSnapshot postSnapshot: dataSnapshot.getChildren())
+                {
+                    Usera newUser = new Usera();
+                    newUser.SetNewUsera(postSnapshot);
+                    UserList.add(newUser);
+                    usercount++;
+
+                    //add the reminder to the list
+                    if (newUser.Name.equalsIgnoreCase("Patient1"))
+                    {
+                        userid = usercount;
+
+                        for (sg.gowild.sademo.Log tempLog : newUser.ReminderLogList)
+                        {
+                            logid++;
+                        }
+
+                        currentuser = newUser;
+                    }
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+
+        Setupviews();
     }
 
     private void Setupviews() {
@@ -42,6 +96,7 @@ public class CreateReminderActivity extends AppCompatActivity {
         hours = findViewById(R.id.hour);
         mins = findViewById(R.id.mins);
         display = findViewById(R.id.dislay);
+        display.setText("Sun Jul 15 15:07:44 GMT+08:00 2018");
         cv = (CalendarView) findViewById(R.id.calendar);
 
         cancel.setOnClickListener(new View.OnClickListener() {
@@ -54,6 +109,14 @@ public class CreateReminderActivity extends AppCompatActivity {
         create.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
+                Log log = new Log(display.getText().toString(), "New Reminder",false);
+                currentuser.AddReminderLog(log.toString());
+
+                HashMap<String, Object> res = new HashMap<>();
+                res.put(String.valueOf(logid), log);
+                databaseRef.child("users").child(String.valueOf(userid)).child("Reminder Log").push();
+                databaseRef.child("users").child(String.valueOf(userid)).child("Reminder Log").updateChildren(res);
 
                 startActivity(new Intent(CreateReminderActivity.this, ReminderActivity.class));
             }
