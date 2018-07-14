@@ -585,7 +585,7 @@ public class MainActivity extends AppCompatActivity {
                         String symptom = parts[1];
                         symptom = symptom.replace(" ", "_");
                         describeText = symptom;
-                        symptoms.add(describeText);
+                        //symptoms.add(describeText);
                         new DescribeSymptom().execute();
                     }
                     else if(speech.equalsIgnoreCase("diagnosis_function")){
@@ -596,11 +596,11 @@ public class MainActivity extends AppCompatActivity {
                         CurrentState = DialogState.ENQUIRE_FINISH;
                         //if (CurrentState == DialogState.ENQUIRE_FINISH)
                             new PossibleCondition().execute();
-                            TextView txtdesc = (TextView) findViewById(R.id.symptomtext);
-                            possibleConditions.add(txtdesc.getText().toString());
-                            currUser.LogSymptoms(databaseRef,symptoms,possibleConditions);
-                            symptoms.clear();
-                            possibleConditions.clear();
+//                            TextView txtDesc = (TextView) findViewById(R.id.symptomtext);
+//                            possibleConditions.add(txtDesc.getText().toString());
+//                            currUser.LogSymptoms(databaseRef,symptoms,possibleConditions);
+//                            symptoms.clear();
+//                            possibleConditions.clear();
                     }
                     else if(speech.equalsIgnoreCase("Error")){
                         startTts(ErrorText);
