@@ -106,12 +106,13 @@ public class CreateReminderActivity extends AppCompatActivity {
 
                 try {
                     date1 = new SimpleDateFormat("dd/MM/yyyy").parse(date);
-                } catch (ParseException e) {
-                    e.printStackTrace();
-                };
+            } catch (ParseException e) {
+                e.printStackTrace();
+            };
 
+                String finaldate = new SimpleDateFormat("E, MMM d, yyyy").format(date1);
                 date1.setTime(longtime);
-                String finaldate = new SimpleDateFormat("E, MMM d, yyyy, hh:mm aa").format(date1);
+                finaldate += " " + new SimpleDateFormat("hh:mm aa").format(date1);
                 display.setText(finaldate);
             }
         });
