@@ -132,10 +132,6 @@ public class MainActivity extends AppCompatActivity {
     List<Date> list_reminder;
     List<String> list_reminder_info;
 
-    List<String> symptoms;
-    List<String> possibleConditions;
-    Usera currUser;
-
     enum DialogState
     {
         IDLE,
@@ -226,11 +222,11 @@ public class MainActivity extends AppCompatActivity {
                         //t.start();
                     }
                 }
-//                for (Usera temp : UserList) {
-//                    Log.v("User", temp.Name + " : " + temp.State);
-//                    //String note = ()
-//                    Log.v("Log", "" + temp.ReminderLogList.get(0).DateTime_s);
-//                }
+                for (Usera temp : UserList) {
+                    Log.v("User", temp.Name + " : " + temp.State);
+                    //String note = ()
+                    Log.v("Log", "" + temp.ReminderLogList.get(0).DateTime_s);
+                }
             }
 
             @Override
@@ -338,10 +334,9 @@ public class MainActivity extends AppCompatActivity {
                 DateFormat timeFormat = new SimpleDateFormat("HH:mm");
                 date.put(dateFormat.format(Calendar.getInstance().getTime()), timeFormat.format(Calendar.getInstance().getTime()));
 
-                String key = String.valueOf(UserCount+1);//databaseRef.child("users").push().getKey();
-                Usera newUser = new Usera(key,"Patient","healthy");
+                String key = String.valueOf(UserCount + 1);//databaseRef.child("users").push().getKey();
+                Usera newUser = new Usera("Patient","healthy");
                 newUser.AddReminderLog("Please Take XYZ medicine");
-                currUser = newUser;
 
                 HashMap<String, Object> result = new HashMap<>();
                 result.put("Name", newUser.Name);
@@ -585,7 +580,6 @@ public class MainActivity extends AppCompatActivity {
                         String symptom = parts[1];
                         symptom = symptom.replace(" ", "_");
                         describeText = symptom;
-                        //symptoms.add(describeText);
                         new DescribeSymptom().execute();
                     }
                     else if(speech.equalsIgnoreCase("diagnosis_function")){
@@ -596,11 +590,6 @@ public class MainActivity extends AppCompatActivity {
                         CurrentState = DialogState.ENQUIRE_FINISH;
                         //if (CurrentState == DialogState.ENQUIRE_FINISH)
                             new PossibleCondition().execute();
-//                            TextView txtDesc = (TextView) findViewById(R.id.symptomtext);
-//                            possibleConditions.add(txtDesc.getText().toString());
-//                            currUser.LogSymptoms(databaseRef,symptoms,possibleConditions);
-//                            symptoms.clear();
-//                            possibleConditions.clear();
                     }
                     else if(speech.equalsIgnoreCase("Error")){
                         startTts(ErrorText);
@@ -795,7 +784,6 @@ public class MainActivity extends AppCompatActivity {
     // DescribeSymptom AsyncTask ================================================================================================
     private class DescribeSymptom extends AsyncTask<Void, Void, Void>{
         String desc = "";
-
 
 /*        public DescribeSymptom(String text) {
             super();
