@@ -472,7 +472,7 @@ public class MainActivity extends AppCompatActivity {
                     currentStatetext.setText(CurrentState.toString());
 
                     // Execute Title AsyncTask
-                    if (CurrentState == DialogState.ENQUIRING && (!text.contains("done") ||!text.contains("no") ))
+                    if (CurrentState == DialogState.ENQUIRING && !text.contains("no"))
                         url += text + "/";
                     symptomtext.setText(url);
                     //new PossibleCondition().execute();
@@ -939,11 +939,12 @@ public class MainActivity extends AppCompatActivity {
         //if(sdf.format(todayDate).equals(sdf.format(list_reminder.get(0))))
             //startTts(list_reminder_info.get(0));
 
+
         Date tdy = todayDate;
         for (int i = 0; i < list_reminder.size(); i++)
         {
                // hh:mm");
-            if(list_reminder.get(i).getTime() <= tdy.getTime())
+            if(list_reminder.get(i).getTime() <= tdy.getTime() && firstrun == false)
                 startTts(list_reminder_info.get(i));
         }
     }
